@@ -1,3 +1,11 @@
+:root {
+  --primary: #2B2D42;
+  --secondary: #8D99AE;
+  --light: #EDF2F4;
+  --dark: #333333;
+  --accent: #D90429;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 10vh;

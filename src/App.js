@@ -4,6 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { useState } from 'react';
 import React from 'react';
+import AddMovie from './components/addmovie';
 
 function App() {
   const [value, setValue] = useState(0);
@@ -26,9 +27,7 @@ function App() {
         </Tabs>
       </nav>
       <div>
-        {value === 1 ? <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p> : null}
+        {value === 1 ? <AddMovie /> : null}
       </div>
       
     </div>
