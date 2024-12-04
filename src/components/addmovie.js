@@ -1,10 +1,13 @@
-import { Checkbox, FormControl, InputLabel, List, ListItem, ListItemText, MenuItem, OutlinedInput, Select, TextField } from '@mui/material';
+import { Button, Checkbox, FormControl, InputLabel, List, ListItem, ListItemText, MenuItem, OutlinedInput, Select, TextField } from '@mui/material';
 import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/700.css';
 import '../App.css';
 import './addmovie.css';
 import { useState } from 'react';
 import React from 'react';
 import NoImage from '../assets/no-image.jpg';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const movieGenres = [
   "Action",
@@ -25,15 +28,38 @@ const movieGenres = [
 ];
 
 function AddMovie() {
-  const [movieTitle, setMovieTitle ] = useState("");
+  /*const [movieTitle, setMovieTitle ] = useState("");
   const [voLang, setVoLang ] = useState("");
   const [subLang, setSubLang ] = useState("");
   const [duration, setDuration ] = useState("");
   const [year, setYear ] = useState("");
   const [genres, setGenres ] = useState([]);
-  const [posterUrl, setPosterUrl ] = useState("");
+  const [posterUrl, setPosterUrl ] = useState("");*/
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const thisYear = new Date().getFullYear();
 
-  const handleUrl = (e) => {
+  const [ formData, setFormData] = useState({
+    movieTitle: "",
+    voLang: "",
+    subLang: "",
+    duration: "",
+    year: "",
+    genres: [],
+    posterUrl: ""
+  });
+
+  const [ errorFields, setErrorFields] = useState({
+    movieTitle: false,
+    voLang: false,
+    subLang: false,
+    duration: false,
+    year: false,
+    genres: false,
+    posterUrl: false,
+  });
+
+  /*const handleUrl = (e) => {
     console.log(e);
     setPosterUrl(e.target.value);
   }
@@ -41,32 +67,91 @@ function AddMovie() {
   const handleGenres = (e) => {
     console.log(e);
     setGenres(typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value);
+  }*/
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    const newFormData = {...formData,[name]: value};
+    setFormData(newFormData);
+  }
+
+  const handleSubmit = async ()=>{
+    setLoading(true);
+    setError("");
+    const newErrorFields = {
+      movieTitle: false,
+      voLang: false,
+      subLang: false,
+      duration: false,
+      year: false,
+      genres: false,
+      posterUrl: false,
+    };
+
+    //Validation
+    if(formData.movieTitle.length < 1){
+      newErrorFields.movieTitle = true;
+    }
+    if(isNaN(parseInt(formData.year)) || parseInt(formData.year) < 1800 || parseInt(formData.year) > thisYear){
+      newErrorFields.year = true;
+    }
+    if(isNaN(parseInt(formData.duration)) || parseInt(formData.duration) < 1){
+      newErrorFields.duration = true;
+    }
+    if(formData.voLang.length < 1){
+      newErrorFields.voLang = true;
+    }
+    setErrorFields(newErrorFields);
+
+    if(Object.values(newErrorFields).some(value => value === true)){
+      setLoading(false);
+      return;
+    }
+    else{
+      const dataToSend = JSON.stringify(formData);
+      try {
+        const response = await fetch("https://full-stack-project2.vercel.app/api/add", {
+          body: dataToSend,
+          method: "POST",
+        });
+        const data = await response.json();
+        setLoading(false);
+        if(!response.ok){
+          setError(data.message);
+        }
+      }
+      catch (e) {
+        setError(e.message);
+        setLoading(false);
+      }
+    }    
   }
 
   return (
     <div id='addMovie'>
         <FormControl id="form" variant="outlined">
           <div className="formContainers">
-            <TextField slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Title" value={movieTitle} variant="outlined" type="text" onChange={(e)=>setMovieTitle(e.target.value)} required />
+            <TextField error={errorFields.movieTitle} helperText={errorFields.movieTitle ? "Title is required" : ''} name="movieTitle" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Title" value={formData.movieTitle} variant="outlined" type="text" onChange={handleChange} required />
           </div>
           <div className="formContainers">
-            <TextField slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Release Year" value={year} variant="outlined" type="number" onChange={(e)=>setYear(e.target.value)} required />
-            <TextField slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Duration (minutes)" value={duration} variant="outlined" type="number" onChange={(e)=>setDuration(e.target.value)} required />
+            <TextField error={errorFields.year} helperText={errorFields.year ? "Year must be between 1800 and"+thisYear : ''} name="year" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Release Year" value={formData.year} variant="outlined" type="number" onChange={handleChange} required />
+            <TextField error={errorFields.duration} helperText={errorFields.duration ? "Duration must be a number" : ''} name="duration" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Duration (minutes)" value={formData.duration} variant="outlined" type="number" onChange={handleChange} required />
           </div>
           <div className="formContainers">
-            <TextField slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Language" variant="outlined" value={voLang} type="text" onChange={(e)=>setVoLang(e.target.value)} required />
-            <TextField slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Subtitles language" variant="outlined" value={subLang} type="text" onChange={(e)=>setSubLang(e.target.value)} />
+            <TextField error={errorFields.voLang} helperText={errorFields.voLang ? "Language is required" : ''} name="voLang" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Language" variant="outlined" value={formData.voLang} type="text" onChange={handleChange} required />
+            <TextField name="subLang" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Subtitles language" variant="outlined" value={formData.subLang} type="text" onChange={handleChange} />
           </div>
           <div className="formContainers">
             <div className="fields" id="sideFields">
-              <TextField slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Poster URL" variant="outlined" value={posterUrl} type="text" onChange={handleUrl} />
+              <TextField name="posterUrl" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Poster URL" variant="outlined" value={formData.posterUrl} type="text" onChange={handleChange} />
               <FormControl style={{flexDirection: "row"}} variant="outlined">
               <Select
                 multiple
                 displayEmpty
                 className="fields"
-                value={genres}
-                onChange={handleGenres}
+                name="genres"
+                value={formData.genres}
+                onChange={handleChange}
                 input={<OutlinedInput />}
                 label="Genres"
                 renderValue={(selected)=> "Genres"}
@@ -77,14 +162,14 @@ function AddMovie() {
                 </MenuItem>
                 {movieGenres.map((genre) => (
                   <MenuItem key={genre} value={genre}>
-                    <Checkbox checked={genres.includes(genre)} />
+                    <Checkbox checked={formData.genres.includes(genre)} />
                     <ListItemText primary={genre} />
                   </MenuItem>
                 ))}
               </Select>
               </FormControl>
               <List dense={true} className="fields">
-                  {genres.map((genre) => (
+                  {formData.genres.map((genre) => (
                     <ListItem key={genre}>
                       <ListItemText
                         primary={genre}
@@ -92,8 +177,20 @@ function AddMovie() {
                     </ListItem>
                   ))}
               </List>
+              <p className="errorMessage">{error}</p>
+              <LoadingButton
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+                onClick={handleSubmit}
+                loading={loading}
+                loadingPosition="start"
+                fullWidth={true}
+              >
+                Upload files
+              </LoadingButton>
             </div>
-            <div id="posterDiv" className="fields"><img src={posterUrl !== "" ? posterUrl : NoImage} alt="Poster" /></div>
+            <div id="posterDiv" className="fields"><img src={formData.posterUrl !== "" ? formData.posterUrl : NoImage} alt="Poster" /></div>
           </div>
         </FormControl>
     </div>

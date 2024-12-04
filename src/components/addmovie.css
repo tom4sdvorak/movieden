@@ -8,6 +8,10 @@ body {
     justify-content: center;
 }
 
+.errorMessage {
+    color: var(--accent);
+}
+
 #form {
     display: flex;
     flex-direction: column;
@@ -42,22 +46,23 @@ body {
 }
 
 #posterDiv {
-    border-color: var(--secondary);
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 4px;
     aspect-ratio: 3/4;
     justify-content: center;
     display: flex;
+    align-items: flex-start;
 }
 
 #posterDiv img {
     object-fit: contain;
-    width: 90%;
+    width: 70%;
+}
+
+.Mui-focused fieldset {
+    border-color: var(--secondary) !important;
 }
 
 .MuiOutlinedInput-root fieldset {
-    border-color: var(--secondary) !important;
+    border-color: var(--secondary);
 }
 
 .MuiSelect-iconOutlined {
@@ -77,6 +82,16 @@ body {
 
 #sideFields > * {
     flex: 0;
+}
+
+.MuiButton-contained {
+    background-color: var(--secondary) !important;
+    
+}
+
+.MuiButton-root {
+    color: var(--dark) !important;
+    font-weight: 700 !important;
 }
 
 @media screen and (max-width: 480px){
