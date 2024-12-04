@@ -8,6 +8,9 @@ import React from 'react';
 import NoImage from '../assets/no-image.jpg';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import LoadingButton from '@mui/lab/LoadingButton';
+import validator from 'validator'
+
+const API_URL = "http://localhost:3000";
 
 const movieGenres = [
   "Action",
@@ -28,13 +31,6 @@ const movieGenres = [
 ];
 
 function AddMovie() {
-  /*const [movieTitle, setMovieTitle ] = useState("");
-  const [voLang, setVoLang ] = useState("");
-  const [subLang, setSubLang ] = useState("");
-  const [duration, setDuration ] = useState("");
-  const [year, setYear ] = useState("");
-  const [genres, setGenres ] = useState([]);
-  const [posterUrl, setPosterUrl ] = useState("");*/
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const thisYear = new Date().getFullYear();
@@ -59,20 +55,23 @@ function AddMovie() {
     posterUrl: false,
   });
 
-  /*const handleUrl = (e) => {
-    console.log(e);
-    setPosterUrl(e.target.value);
-  }
-
-  const handleGenres = (e) => {
-    console.log(e);
-    setGenres(typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value);
-  }*/
-
   const handleChange = (event) => {
     const { name, value } = event.target;
-    const newFormData = {...formData,[name]: value};
-    setFormData(newFormData);
+
+    if(name === "genres"){
+      if(typeof value === 'string'){
+        const newFormData = {...formData,[name]: value.split(',')};
+        setFormData(newFormData);
+      }
+      else{
+        const newFormData = {...formData,[name]: value};
+        setFormData(newFormData);
+      }
+    }
+    else{
+      const newFormData = {...formData,[name]: value};
+      setFormData(newFormData);
+    }
   }
 
   const handleSubmit = async ()=>{
@@ -101,6 +100,11 @@ function AddMovie() {
     if(formData.voLang.length < 1){
       newErrorFields.voLang = true;
     }
+    if(formData.posterUrl.length > 0){
+      if(validator.isURL(formData.posterUrl) == false){
+        newErrorFields.posterUrl = true;
+      }
+    }
     setErrorFields(newErrorFields);
 
     if(Object.values(newErrorFields).some(value => value === true)){
@@ -109,15 +113,23 @@ function AddMovie() {
     }
     else{
       const dataToSend = JSON.stringify(formData);
+      console.log(dataToSend);
       try {
-        const response = await fetch("https://full-stack-project2.vercel.app/api/add", {
-          body: dataToSend,
+        const response = await fetch(API_URL+"/api/add", {
+          headers: {
+          'Content-Type': 'application/json'
+          },
           method: "POST",
+          body: dataToSend,
         });
         const data = await response.json();
         setLoading(false);
         if(!response.ok){
           setError(data.message);
+        }
+        else{
+          setError("");
+
         }
       }
       catch (e) {
@@ -143,7 +155,7 @@ function AddMovie() {
           </div>
           <div className="formContainers">
             <div className="fields" id="sideFields">
-              <TextField name="posterUrl" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Poster URL" variant="outlined" value={formData.posterUrl} type="text" onChange={handleChange} />
+              <TextField error={errorFields.posterUrl} helperText={errorFields.posterUrl ? "Incorrect URL to image" : ''} name="posterUrl" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Poster URL" variant="outlined" value={formData.posterUrl} type="text" onChange={handleChange} />
               <FormControl style={{flexDirection: "row"}} variant="outlined">
               <Select
                 multiple

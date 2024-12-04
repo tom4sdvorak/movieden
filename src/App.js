@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import { useState } from 'react';
 import React from 'react';
 import AddMovie from './components/addmovie';
+import Gallery from './components/gallery';
 
 function App() {
   const [value, setValue] = useState(0);
@@ -22,12 +23,13 @@ function App() {
       <nav>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Item One" />
-          <Tab label="Item Two" />
-          <Tab label="Item Three" />
+          <Tab label="Add Movie" />
+          <Tab label="Move Gallery" />
         </Tabs>
       </nav>
       <div>
         {value === 1 ? <AddMovie /> : null}
+        {value === 2 ? <Gallery /> : null}
       </div>
       
     </div>

@@ -1,0 +1,20 @@
+body {
+    background-color: var(--primary);
+}
+
+#movieGallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.cards {
+    background-color: var(--light) !important;
+    width: 14rem;
+}
+
+.MuiCardMedia-img {
+    aspect-ratio: 2/3;
+    object-fit: fill;
+    background-size: cover;
+}
