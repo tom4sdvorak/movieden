@@ -7,11 +7,17 @@ import React from 'react';
 import AddMovie from './components/addmovie';
 import Gallery from './components/gallery';
 
-function App() {
-  const [value, setValue] = useState(0);
 
+
+function App() {
+  const [tab, setTab] = useState(0);
+  const [ currentMovie, setCurrentMovie ] = useState(null); // Holds currently seleted movie
+  const [ updateMode, setUpdateMode ] = useState(false); // Changes Add Movie tab from empty form for adding movies to prefilled form for editing selected movie
+
+  // Changes tab
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setTab(newValue);
+    setUpdateMode(false); // Disabled updating mode in case users clicked away from the tab during update
   };
 
   return (
@@ -21,15 +27,15 @@ function App() {
         
       </header>
       <nav>
-        <Tabs value={value} onChange={handleChange}>
+        <Tabs value={tab} onChange={handleChange}>
           <Tab label="Item One" />
-          <Tab label="Add Movie" />
+          <Tab label={updateMode ? "Update Movie" : "Add Movie"} />
           <Tab label="Move Gallery" />
         </Tabs>
       </nav>
       <div>
-        {value === 1 ? <AddMovie /> : null}
-        {value === 2 ? <Gallery /> : null}
+        {tab === 1 ? <AddMovie updateMode={updateMode} setUpdateMode={setUpdateMode} currentMovie={currentMovie} setTab={setTab} /> : null}
+        {tab === 2 ? <Gallery currentMovie={currentMovie} setTab={setTab} setCurrentMovie={setCurrentMovie} setUpdateMode={setUpdateMode} /> : null}
       </div>
       
     </div>

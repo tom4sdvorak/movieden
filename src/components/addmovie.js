@@ -3,15 +3,15 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/700.css';
 import '../App.css';
 import './addmovie.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import NoImage from '../assets/no-image.jpg';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import LoadingButton from '@mui/lab/LoadingButton';
-import validator from 'validator'
+import validator from 'validator';
+import API_URL from '../apiconfig';
 
-const API_URL = "http://localhost:3000";
-
+// Static array of genres
 const movieGenres = [
   "Action",
   "Adventure",
@@ -30,13 +30,15 @@ const movieGenres = [
   "Western",
 ];
 
-function AddMovie() {
+// Screen with form for adding/updating movie
+function AddMovie({setTab, currentMovie, updateMode, setUpdateMode}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const thisYear = new Date().getFullYear();
 
+  // Initialize empty form
   const [ formData, setFormData] = useState({
-    movieTitle: "",
+    title: "",
     voLang: "",
     subLang: "",
     duration: "",
@@ -45,8 +47,16 @@ function AddMovie() {
     posterUrl: ""
   });
 
+  useEffect(()=>{
+    if(updateMode){ // If updateMode is set enabled, fill form with selected movie
+      const newFormData = {...formData, ...currentMovie};
+      setFormData(newFormData);
+    }
+  }, [updateMode]);
+
+  // Holds state (invalid or not) for each input field
   const [ errorFields, setErrorFields] = useState({
-    movieTitle: false,
+    title: false,
     voLang: false,
     subLang: false,
     duration: false,
@@ -55,9 +65,9 @@ function AddMovie() {
     posterUrl: false,
   });
 
+  // Runs when any field is changed
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     if(name === "genres"){
       if(typeof value === 'string'){
         const newFormData = {...formData,[name]: value.split(',')};
@@ -74,11 +84,12 @@ function AddMovie() {
     }
   }
 
+  // Runs when form is submitted
   const handleSubmit = async ()=>{
     setLoading(true);
     setError("");
     const newErrorFields = {
-      movieTitle: false,
+      title: false,
       voLang: false,
       subLang: false,
       duration: false,
@@ -88,8 +99,8 @@ function AddMovie() {
     };
 
     //Validation
-    if(formData.movieTitle.length < 1){
-      newErrorFields.movieTitle = true;
+    if(formData.title.length < 1){
+      newErrorFields.title = true;
     }
     if(isNaN(parseInt(formData.year)) || parseInt(formData.year) < 1800 || parseInt(formData.year) > thisYear){
       newErrorFields.year = true;
@@ -107,21 +118,33 @@ function AddMovie() {
     }
     setErrorFields(newErrorFields);
 
+    // Cancel submitting form if any field is invalid
     if(Object.values(newErrorFields).some(value => value === true)){
       setLoading(false);
       return;
     }
     else{
       const dataToSend = JSON.stringify(formData);
-      console.log(dataToSend);
       try {
-        const response = await fetch(API_URL+"/api/add", {
-          headers: {
-          'Content-Type': 'application/json'
-          },
-          method: "POST",
-          body: dataToSend,
-        });
+        let response;
+        if(updateMode){ // Runs when form is in update mode
+          response = await fetch(API_URL+"/api/update/"+currentMovie._id, {
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            method: "PATCH",
+            body: dataToSend,
+          });
+        }
+        else{ // Runs when form is for adding new movie
+          response = await fetch(API_URL+"/api/add", {
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: dataToSend,
+          });
+        }
         const data = await response.json();
         setLoading(false);
         if(!response.ok){
@@ -129,7 +152,8 @@ function AddMovie() {
         }
         else{
           setError("");
-
+          setUpdateMode(false);
+          setTab(0);
         }
       }
       catch (e) {
@@ -143,7 +167,7 @@ function AddMovie() {
     <div id='addMovie'>
         <FormControl id="form" variant="outlined">
           <div className="formContainers">
-            <TextField error={errorFields.movieTitle} helperText={errorFields.movieTitle ? "Title is required" : ''} name="movieTitle" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Title" value={formData.movieTitle} variant="outlined" type="text" onChange={handleChange} required />
+            <TextField error={errorFields.title} helperText={errorFields.title ? "Title is required" : ''} name="title" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Title" value={formData.title} variant="outlined" type="text" onChange={handleChange} required />
           </div>
           <div className="formContainers">
             <TextField error={errorFields.year} helperText={errorFields.year ? "Year must be between 1800 and"+thisYear : ''} name="year" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Release Year" value={formData.year} variant="outlined" type="number" onChange={handleChange} required />
@@ -199,7 +223,7 @@ function AddMovie() {
                 loadingPosition="start"
                 fullWidth={true}
               >
-                Upload files
+                {updateMode ? "Update Movie" : "Add Movie"}
               </LoadingButton>
             </div>
             <div id="posterDiv" className="fields"><img src={formData.posterUrl !== "" ? formData.posterUrl : NoImage} alt="Poster" /></div>
