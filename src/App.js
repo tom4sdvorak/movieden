@@ -6,6 +6,7 @@ import { useState } from 'react';
 import React from 'react';
 import AddMovie from './components/addmovie';
 import Gallery from './components/gallery';
+import SuggestMovie from './components/random';
 
 
 
@@ -26,16 +27,18 @@ function App() {
       <header className="App-header">
         
       </header>
-      <nav>
+      <nav id="navigation">
         <Tabs value={tab} onChange={handleChange}>
-          <Tab label="Item One" />
+          <Tab label="Home" />
           <Tab label={updateMode ? "Update Movie" : "Add Movie"} />
-          <Tab label="Move Gallery" />
+          <Tab label="Movie Gallery" />
+          <Tab label="Random Movie" />
         </Tabs>
       </nav>
-      <div>
+      <div id="main-container">
         {tab === 1 ? <AddMovie updateMode={updateMode} setUpdateMode={setUpdateMode} currentMovie={currentMovie} setTab={setTab} /> : null}
         {tab === 2 ? <Gallery currentMovie={currentMovie} setTab={setTab} setCurrentMovie={setCurrentMovie} setUpdateMode={setUpdateMode} /> : null}
+        {tab === 3 ? <SuggestMovie /> : null}
       </div>
       
     </div>

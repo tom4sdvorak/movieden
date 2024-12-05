@@ -1,0 +1,17 @@
+#movieContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+#random {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    width: 50%;
+}
+
+#movieCard {
+    width: 100%;
+    padding: 1rem 1rem 1rem 0rem;
+}

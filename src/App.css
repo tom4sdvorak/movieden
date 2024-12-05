@@ -16,3 +16,16 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+#navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
