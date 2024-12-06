@@ -14,4 +14,17 @@
 #movieCard {
     width: 100%;
     padding: 1rem 1rem 1rem 0rem;
+    background-color: var(--secondary);
+}
+
+#cardText {
+    padding-top: 1rem;
+}
+
+#randomButton {
+    border-bottom: 1px solid var(--accent);
+}
+
+#posterImg {
+    border: 5px outset var(--primary);
 }

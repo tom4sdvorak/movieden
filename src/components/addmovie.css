@@ -10,6 +10,8 @@ body {
 
 .errorMessage {
     color: var(--accent);
+    text-align: center;
+    line-height: 1rem;
 }
 
 #form {
@@ -19,7 +21,6 @@ body {
     width: 50%;
     align-self: center;
     gap: 1rem;
-    
 }
 
 .formContainers {
@@ -65,6 +66,10 @@ body {
     border-color: var(--secondary);
 }
 
+.MuiOutlinedInput-root:hover fieldset {
+    border-color: var(--light) !important;
+}
+
 .MuiSelect-iconOutlined {
     color: var(--light) !important;
 }
@@ -94,12 +99,36 @@ body {
     font-weight: 700 !important;
 }
 
+.genresItems{
+    color: var(--dark) !important;
+    font-size: 2rem !important;
+    opacity: 1 !important;
+}
+.genresItems > span {
+    color: var(--dark) !important;
+    font-size: 1.5rem;
+}
+
+.Mui-selected.genresItems{
+    background-color: #7f8a9c !important;
+}
+.Mui-checked{
+    color: var(--primary) !important;
+}
+
+.MuiMenu-list{
+    background-color: var(--secondary);
+}
+
+#addButton {
+    border-bottom: 1px solid var(--accent);
+}
+
 @media screen and (max-width: 480px){
     #form {
-        width: 100%;
         justify-content: center;
         align-content: center;
-        padding: 1rem;
+        width: 100%;
     }
     .formContainers {
         flex-direction: column;

@@ -8,3 +8,7 @@
     justify-content: center !important;
 }
 
+#dialog > .MuiDialog-container > .MuiDialog-paper {
+    background-color: var(--light);
+}
+

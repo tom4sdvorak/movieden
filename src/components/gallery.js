@@ -43,13 +43,14 @@ function Gallery({setTab, currentMovie, setCurrentMovie, setUpdateMode}) {
             <PopUp isOpen={isOpen} setIsOpen={setIsOpen} movie={currentMovie} setUpdateMode={setUpdateMode} setTab={setTab} />
             {loading ? <CircularProgress /> : movies.map((movie) => (
                 <Card className="cards" key={movie._id}>
-                    <CardActionArea onClick={()=> handleCardClick(movie)}>
+                    <CardActionArea onClick={()=> handleCardClick(movie)} className="cardClickables">
                         <CardMedia
                         component="img"
                         image={movie.posterUrl !== undefined ? movie.posterUrl : NoImage}
+                        className="cardPosters"
                         />
-                        <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
+                        <CardContent className="cardContents">
+                        <Typography className="cardTitles" gutterBottom variant="h5" component="div">
                             {movie.title}
                         </Typography>
                         </CardContent>

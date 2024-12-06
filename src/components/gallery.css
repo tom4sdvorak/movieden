@@ -20,3 +20,31 @@ body {
     object-fit: fill;
     background-size: cover;
 }
+
+.cardPosters{
+    border-bottom-color: var(--accent);
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    display: flex;
+    flex: 2,
+}
+
+.cardClickables{
+    height: auto;
+}
+
+.cardTitles{
+    text-align: center;
+}
+
+@media screen and (max-width: 480px){
+    #movieGallery{
+        width: 100%;
+    }
+    .cards{
+        width: 30%;
+    }
+    .cardTitles{
+        font-size: 1rem !important;
+    }
+}

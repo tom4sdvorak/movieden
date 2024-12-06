@@ -7,14 +7,13 @@
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  border-bottom: 1px groove var(--accent);
 }
 
 #navigation {
@@ -28,4 +27,23 @@
   justify-content: center;
   align-items: center;
   padding: 1rem;
+}
+
+.tab{
+  color: var(--light) !important;
+}
+
+.MuiTabs-indicator{
+  background-color: var(--accent) !important;
+}
+
+#pageTitle{
+  color: var(--accent);
+  font-weight: bold;
+}
+
+@media screen and (max-width: 480px){
+  html {
+    font-size: 12px;
+  }
 }

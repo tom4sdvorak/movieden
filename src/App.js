@@ -7,6 +7,7 @@ import React from 'react';
 import AddMovie from './components/addmovie';
 import Gallery from './components/gallery';
 import SuggestMovie from './components/random';
+import { Typography } from '@mui/material';
 
 
 
@@ -25,14 +26,14 @@ function App() {
     <div className="App">
       <meta name="viewport" content="initial-scale=1, width=device-width" />
       <header className="App-header">
-        
+        <Typography variant='h1' id="pageTitle">MovieDen</Typography>
       </header>
       <nav id="navigation">
         <Tabs value={tab} onChange={handleChange}>
-          <Tab label="Home" />
-          <Tab label={updateMode ? "Update Movie" : "Add Movie"} />
-          <Tab label="Movie Gallery" />
-          <Tab label="Random Movie" />
+          <Tab className="tab" label="Home" />
+          <Tab className="tab" label={updateMode ? "Update" : "Add"} />
+          <Tab className="tab" label="Gallery" />
+          <Tab className="tab" label="Random" />
         </Tabs>
       </nav>
       <div id="main-container">

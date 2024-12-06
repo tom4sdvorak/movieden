@@ -167,7 +167,7 @@ function AddMovie({setTab, currentMovie, updateMode, setUpdateMode}) {
     <div id='addMovie'>
         <FormControl id="form" variant="outlined">
           <div className="formContainers">
-            <TextField error={errorFields.title} helperText={errorFields.title ? "Title is required" : ''} name="title" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Title" value={formData.title} variant="outlined" type="text" onChange={handleChange} required />
+            <TextField autoFocus error={errorFields.title} helperText={errorFields.title ? "Title is required" : ''} name="title" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Title" value={formData.title} variant="outlined" type="text" onChange={handleChange} required />
           </div>
           <div className="formContainers">
             <TextField error={errorFields.year} helperText={errorFields.year ? "Year must be between 1800 and"+thisYear : ''} name="year" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Release Year" value={formData.year} variant="outlined" type="number" onChange={handleChange} required />
@@ -179,7 +179,7 @@ function AddMovie({setTab, currentMovie, updateMode, setUpdateMode}) {
           </div>
           <div className="formContainers">
             <div className="fields" id="sideFields">
-              <TextField error={errorFields.posterUrl} helperText={errorFields.posterUrl ? "Incorrect URL to image" : ''} name="posterUrl" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Poster URL" variant="outlined" value={formData.posterUrl} type="text" onChange={handleChange} />
+              <TextField error={errorFields.posterUrl} helperText={errorFields.posterUrl ? "Incorrect URL to image. Either provide correct URL or leave the field empty." : ''} name="posterUrl" slotProps={{ input: { className: "inputs" }, inputLabel: { className: "labels" } }} className="fields" label="Movie Poster URL" variant="outlined" value={formData.posterUrl} type="text" onChange={handleChange} />
               <FormControl style={{flexDirection: "row"}} variant="outlined">
               <Select
                 multiple
@@ -193,13 +193,13 @@ function AddMovie({setTab, currentMovie, updateMode, setUpdateMode}) {
                 renderValue={(selected)=> "Genres"}
                 slotProps={{ input: { className: "inputs" }}}
               >
-                <MenuItem disabled value="">
+                <MenuItem className="genresItems" disabled value="">
                   Genres
                 </MenuItem>
                 {movieGenres.map((genre) => (
-                  <MenuItem key={genre} value={genre}>
-                    <Checkbox checked={formData.genres.includes(genre)} />
-                    <ListItemText primary={genre} />
+                  <MenuItem className="genresItems" key={genre} value={genre}>
+                    <Checkbox className="genresCheckboxes" size="medium" checked={formData.genres.includes(genre)} />
+                    <ListItemText className="genresItems" primary={genre} />
                   </MenuItem>
                 ))}
               </Select>
@@ -213,18 +213,21 @@ function AddMovie({setTab, currentMovie, updateMode, setUpdateMode}) {
                     </ListItem>
                   ))}
               </List>
-              <p className="errorMessage">{error}</p>
-              <LoadingButton
-                component="label"
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
-                onClick={handleSubmit}
-                loading={loading}
-                loadingPosition="start"
-                fullWidth={true}
-              >
-                {updateMode ? "Update Movie" : "Add Movie"}
-              </LoadingButton>
+              <div>
+                <p className="errorMessage">{error}</p>
+                <LoadingButton
+                  component="label"
+                  variant="contained"
+                  startIcon={<CloudUploadIcon />}
+                  onClick={handleSubmit}
+                  loading={loading}
+                  loadingPosition="start"
+                  fullWidth={true}
+                  id="addButton"
+                >
+                  {updateMode ? "Update Movie" : "Add Movie"}
+                </LoadingButton>
+              </div>
             </div>
             <div id="posterDiv" className="fields"><img src={formData.posterUrl !== "" ? formData.posterUrl : NoImage} alt="Poster" /></div>
           </div>

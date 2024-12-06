@@ -61,31 +61,34 @@ function SuggestMovie(){
                 loading={loading}
                 loadingPosition="start"
                 fullWidth={true}
+                id="randomButton"
               >
                 Find Random Movie
               </LoadingButton>
               {movie ?
                 <Card id="movieCard" variant="outlined">
-                    <div style={{display: "flex", flexDirection: "row"}}>
-                        <div style={{display: "flex", flex: "1", justifyContent: "center"}}><img style={{width: "90%", objectFit: "cover"}} src={movie?.posterUrl} alt="Poster"/></div>
+                    <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
+                        <div style={{display: "flex", flex: "1", justifyContent: "center", paddingLeft: "1rem"}}><img id="posterImg" style={{width: "90%", objectFit: "cover"}} src={movie?.posterUrl} alt="Poster"/></div>
                         <div style={{display: "flex", flex: "2", flexDirection: "column"}}>
                             <div>
                                 <Typography gutterBottom variant="h5" component="div">
                                     {movie.title+" ("+movie.year+")"}
                                 </Typography>
                                 <Divider />
-                                <Typography variant="body2">
-                                    <b>Duration:</b> {movie?.duration} minutes
-                                </Typography>
-                                <Typography variant="body2">
-                                    <b>Language:</b> {movie?.voLang}
-                                </Typography>
-                                <Typography variant="body2">
-                                    <b>Subtitles:</b> {movie?.subLang}
-                                </Typography>
-                                <Typography variant="body2">
-                                    <b>Genres:</b> {movie?.genres === undefined ? "" : (movie?.genres).join(", ")}
-                                </Typography>
+                                <div id="cardText">
+                                    <Typography variant="body2">
+                                        <b>Duration:</b> {movie?.duration} minutes
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        <b>Language:</b> {movie?.voLang}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        <b>Subtitles:</b> {movie?.subLang}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        <b>Genres:</b> {movie?.genres === undefined ? "" : (movie?.genres).join(", ")}
+                                    </Typography>
+                                </div>
                             </div>
                         </div>
                     </div>

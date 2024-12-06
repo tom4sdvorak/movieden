@@ -75,7 +75,7 @@ export default function PopUp({isOpen, setIsOpen, movie, setTab, setUpdateMode})
   return (
         <>
             {movie === undefined ? null :
-            <Dialog open={isOpen} onClose={handleClose}>
+            <Dialog open={isOpen} onClose={handleClose} id="dialog">
                 <DialogTitle>{movie?.title+" ("+movie?.year+")"}</DialogTitle>
                 <DialogContent dividers>
                     <Typography>
