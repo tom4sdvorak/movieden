@@ -42,6 +42,14 @@
   font-weight: bold;
 }
 
+.homeText {
+  color: var(--light);
+}
+
+li::marker {
+  color: var(--accent);
+}
+
 @media screen and (max-width: 480px){
   html {
     font-size: 12px;

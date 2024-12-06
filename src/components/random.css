@@ -1,6 +1,7 @@
 #movieContainer {
     display: flex;
     flex-direction: row;
+    gap: 1rem;
 }
 
 #random {
@@ -13,7 +14,7 @@
 
 #movieCard {
     width: 100%;
-    padding: 1rem 1rem 1rem 0rem;
+    padding: 1rem;
     background-color: var(--secondary);
 }
 
@@ -23,8 +24,26 @@
 
 #randomButton {
     border-bottom: 1px solid var(--accent);
+    width: 50%;
 }
 
 #posterImg {
     border: 5px outset var(--primary);
+}
+
+@media screen and (max-width: 480px){
+    #random{
+        width: 100%;
+    }
+    #movieContainer{
+        flex-direction: column-reverse;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        justify-content: flex-end;
+        align-content: center;
+    }
+    #cardText{
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }

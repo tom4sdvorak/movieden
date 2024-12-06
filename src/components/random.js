@@ -3,7 +3,8 @@ import API_URL from '../apiconfig';
 import { LoadingButton } from '@mui/lab';
 import ShuffleOutlinedIcon from '@mui/icons-material/ShuffleOutlined';
 import { Card, Chip, Divider, Stack, Typography } from '@mui/material';
-import "./random.css"
+import '../App.css';
+import "./random.css";
 
 function SuggestMovie(){
     const [movieIds, setMovieIds] = useState([]);
@@ -67,8 +68,8 @@ function SuggestMovie(){
               </LoadingButton>
               {movie ?
                 <Card id="movieCard" variant="outlined">
-                    <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
-                        <div style={{display: "flex", flex: "1", justifyContent: "center", paddingLeft: "1rem"}}><img id="posterImg" style={{width: "90%", objectFit: "cover"}} src={movie?.posterUrl} alt="Poster"/></div>
+                    <div id="movieContainer">
+                        <div style={{display: "flex", flex: "1", justifyContent: "center"}}><img id="posterImg" style={{width: "90%", objectFit: "cover"}} src={movie?.posterUrl} alt="Poster"/></div>
                         <div style={{display: "flex", flex: "2", flexDirection: "column"}}>
                             <div>
                                 <Typography gutterBottom variant="h5" component="div">
